@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Node from './Node'
 
 
 const initialzeObjectForGrid = (row, col) => {
@@ -31,7 +30,7 @@ const Grid = () => {
     );
     const [MouseHold, setMouseHold] = useState(false);
     const setObstacle = (node) => {
-        if (MouseHold) {
+        if (MouseHold && GridData[node] !== 'SOURCE' && GridData[node] !== 'DESTINATION') {
             let gridData = {};
             Object.keys(GridData).map(element => {
                 if (element === node) {
