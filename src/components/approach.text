@@ -1,0 +1,17 @@
+Create the interface , each node identified by Number 
+dont want to go for a row x col. loop instead a single loop and use grid(css)
+30 x 50 =1500 , therefore 1500 boxes
+
+
+4 click events:-
+Source, Destination, Boundaries/Obstacles 
+Maintain a state called gridData which is an object
+gridData :{
+    Source:'x',
+    Destination:'y',
+    Obstacles:[]
+}
+Constraint is if one assigned, cannot be reassigned
+We will have InputMode state to check which gridData to assign at a instance.
+Finally we will have Find Path button which will trigger our helper function, to compute
+the shortest path.
