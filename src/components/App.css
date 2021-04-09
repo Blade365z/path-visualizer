@@ -1,8 +1,7 @@
 .node {
   text-align: center;
-  padding-top: 3px;
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 25px;
   border-width: 1px;
   border-color: rgba(51, 51, 51, 0.26);
   border-style: solid;
@@ -11,12 +10,10 @@
   display: flex;
   justify-content: center;
 }
-.node:hover {
-  background-color: rgb(202, 201, 201);
-}
-.node-symbol {
-  text-align: center;
-  margin-top: 2px;
+
+.node i {
+  margin-top: 3px;
+  font-size: 1.3em;
 }
 .grid {
   vertical-align: middle;
@@ -30,4 +27,22 @@
 
 .obstacle {
   background-color: rgb(51, 51, 51);
+}
+
+.nav {
+  padding: 0 3% 0 3%;
+  display: flex;
+}
+.drop-down {
+  padding: 5px;
+  border-radius: 6px;
+}
+.button {
+  margin: 0px 0px 10px 10px;
+  background-color: rgb(0, 65, 30);
+  color: #ffff;
+  stroke: 0px;
+  border: 0px;
+  padding: 8px;
+  border-radius: 6px;
 }
