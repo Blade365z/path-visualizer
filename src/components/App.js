@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from 'react'
 
 import Grid from './Grid';
-
+import { wrapperGraph } from './helper';
 import './App.css';
 
+
+import Dijkstra from '../algorithms/dijkstra';
 
 const initialzeObjectForGrid = (row, col) => {
     //Grid Object Initalizer
@@ -13,8 +15,8 @@ const initialzeObjectForGrid = (row, col) => {
         }
     */
     let object = {};
-    let source = 458;
-    let destination = 477;
+    let source = 5;
+    let destination = 13;
     for (let i = 0; i < (row * col); i++) {
         if (i === source)
             object[i] = 'SOURCE';
@@ -27,7 +29,7 @@ const initialzeObjectForGrid = (row, col) => {
 }
 const App = () => {
     const [GridData, setGridData] = useState(
-        initialzeObjectForGrid(20, 50)
+        initialzeObjectForGrid(5, 5)
     );
     const setUpObstacles = useCallback((node, type) => {
         setGridData(prevState => ({
@@ -38,11 +40,19 @@ const App = () => {
 
     const setDraggedNode = (source, target) => {
         let typeTemp = GridData[source];
-        setGridData(prevState => ({
-            ...prevState,
-            [target]: typeTemp,
-            [source]: 'PATH',
-        }));
+        setGridData(prevState => {
+            return ({
+                ...prevState,
+                [target]: typeTemp,
+                [source]: 'PATH',
+            })
+        });
+    }
+
+    const findPath = async () => {
+        const processedGraph = wrapperGraph(GridData, 5, 5);
+        const path = await Dijkstra(processedGraph);
+        console.log(path)
     }
 
     return (
@@ -54,7 +64,9 @@ const App = () => {
                         <option>Dijkstra's Algorithm</option>
                         <option>A* Algorithm</option>
                     </select>
-                    <button className="button">Search Path</button>
+                    <button className="button" onClick={() => findPath()}>Search Path</button>
+                    <button className="button">Reset Grid   </button>
+
                 </div>
             </div>
             <div className="grid-container">
