@@ -6,31 +6,40 @@ import './App.css';
 
 
 import Dijkstra from '../algorithms/dijkstra';
-
-const initialzeObjectForGrid = (row, col) => {
-    //Grid Object Initalizer
-    /*
-        {
-            Node-Number:Type
-        }
-    */
+const graph = {
+    row: 20,
+    col: 50,
+    defaultSource: 209,
+    defaultDestination: 418,
+    source: 'SOURCE',
+    destination: 'DESTINATION',
+    obstacles: 'OBSTACLE',
+    path: 'PATH',
+}
+function initialzeObjectForGrid(row, col) {
     let object = {};
-    let source = 5;
-    let destination = 13;
+    let source = graph.defaultSource; //defaut Source
+    let destination = graph.defaultDestination; //default Destination
     for (let i = 0; i < (row * col); i++) {
         if (i === source)
-            object[i] = 'SOURCE';
+            object[i] = graph.source;
         else if (i === destination)
-            object[i] = 'DESTINATION'
+            object[i] = graph.destination
         else
-            object[i] = 'PATH'
+            object[i] = graph.path
     }
     return object;
 }
 const App = () => {
     const [GridData, setGridData] = useState(
-        initialzeObjectForGrid(5, 5)
+        initialzeObjectForGrid(graph.row, graph.col)
     );
+    const [ShortestPath, setShortestPath] = useState({});
+    const [VisitedNodes, setVistedNodes] = useState({});
+
+
+
+
     const setUpObstacles = useCallback((node, type) => {
         setGridData(prevState => ({
             ...prevState,
@@ -44,14 +53,14 @@ const App = () => {
             return ({
                 ...prevState,
                 [target]: typeTemp,
-                [source]: 'PATH',
+                [source]: graph.path,
             })
         });
     }
 
     const findPath = async () => {
-        const processedGraph = wrapperGraph(GridData, 5, 5);
-        const path = await Dijkstra(processedGraph);
+        const processedGraph = wrapperGraph(GridData, graph.row, graph.col);
+        const path = await Dijkstra(processedGraph.adjacencyList, processedGraph.source, processedGraph.destination);
         console.log(path)
     }
 

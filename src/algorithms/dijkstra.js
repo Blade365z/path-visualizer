@@ -10,7 +10,7 @@
 
 
 
-var visited = [];
+var visited = {};
 var weights = {};
 var parentMap = {};
 var graph = {};
@@ -19,18 +19,19 @@ function calulateShortest(neigh, selectedNode) {
         if (weights[neighbour]) {
             let currentWeight = weights[neighbour];
             let parent = selectedNode;
+            let child = neighbour;
             let totalWeight = 0;
-            while (parent) {
-                let tempNeigh = graph[parent];
-                totalWeight += tempNeigh[neighbour];
-                parent = parentMap[tempNeigh];
+            while (parent !== null) {
+                totalWeight += graph[parent][child]
+                child = parent;
+                parent = parentMap[parent]
             }
-            //Relaxation
+            // Relaxation
             if (totalWeight < currentWeight) {
                 weights[neighbour] = totalWeight;
                 parentMap[neighbour] = selectedNode;
-                parent = parentMap[parent];
             }
+
         }
     })
     //Find the minimum weighted node in the current context
@@ -38,20 +39,24 @@ function calulateShortest(neigh, selectedNode) {
         node: null,
         cost: Infinity
     };
+
     Object.keys(weights).map(node => {
-        if (weights[node] < min.cost && !visited.includes(node)) {
+        if (weights[node] < min.cost && !visited[node]) {
             min.cost = weights[node];
             min.node = node
         }
     });
     return min;
 }
+const calculateDistance = (source, destination) => {
 
-const Dijkstra = (data) => {
+}
+
+const Dijkstra = (data, source, destination) => {
     graph = data;
     //Initalization
-    let startNode = "5";
-    let finishNode = "13";
+    let startNode = source;
+    let finishNode = destination;
     Object.keys(graph).map(node => weights[node] = Infinity)
     Object.keys(graph).map(node => parentMap[node] = null)
     let selectedNode = startNode;
@@ -61,17 +66,21 @@ const Dijkstra = (data) => {
         parentMap[node] = selectedNode
     })
     //Analysing all nodes and computing the cost
-    Object.keys(graph).forEach(node => {
-        if (!visited.includes(selectedNode))
-            visited.push(selectedNode)
+    let graphLength = Object.keys(graph).length
+    for (let i = 0; i < graphLength; i++) {
+        visited[selectedNode] = true;
         let neighbours = graph[selectedNode];
         if (neighbours) {
             let min = calulateShortest(neighbours, selectedNode);
             selectedNode = min.node;
         }
-    })
-    //Backtrack
-    //Validating if the destination is reachable or not.
+        if (selectedNode === finishNode) {
+            break;
+        }
+    }
+
+    // //Backtrack
+    // //Validating if the destination is reachable or not.
     let parent = parentMap[finishNode];
     if (parent) {
         let path = [finishNode];
@@ -84,7 +93,8 @@ const Dijkstra = (data) => {
         //Printing the results
         return {
             path: path.reverse(),
-            cost: totalCost
+            cost: totalCost,
+            visited: visited
         }
     }
     else {
