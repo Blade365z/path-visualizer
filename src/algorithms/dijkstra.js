@@ -8,52 +8,10 @@
 //calulateShortest()
 //Dijkstras()
 
-
-
-var visited = {};
-var weights = {};
-var parentMap = {};
-var graph = {};
-function calulateShortest(neigh, selectedNode) {
-    Object.keys(neigh).map(neighbour => {
-        if (weights[neighbour]) {
-            let currentWeight = weights[neighbour];
-            let parent = selectedNode;
-            let child = neighbour;
-            let totalWeight = 0;
-            while (parent !== null) {
-                totalWeight += graph[parent][child]
-                child = parent;
-                parent = parentMap[parent]
-            }
-            // Relaxation
-            if (totalWeight < currentWeight) {
-                weights[neighbour] = totalWeight;
-                parentMap[neighbour] = selectedNode;
-            }
-
-        }
-    })
-    //Find the minimum weighted node in the current context
-    var min = {
-        node: null,
-        cost: Infinity
-    };
-
-    Object.keys(weights).map(node => {
-        if (weights[node] < min.cost && !visited[node]) {
-            min.cost = weights[node];
-            min.node = node
-        }
-    });
-    return min;
-}
-const calculateDistance = (source, destination) => {
-
-}
-
-const Dijkstra = (data, source, destination) => {
-    graph = data;
+const Dijkstra = (graph, source, destination) => {
+    var visited = {};
+    var weights = {};
+    var parentMap = {};
     //Initalization
     let startNode = source;
     let finishNode = destination;
@@ -62,7 +20,7 @@ const Dijkstra = (data, source, destination) => {
     let selectedNode = startNode;
     let startNeighbours = graph[selectedNode];
     weights[selectedNode] = 0;
-    Object.keys(startNeighbours).map(node => {
+    Object.keys(startNeighbours).forEach(node => {
         parentMap[node] = selectedNode
     })
     //Analysing all nodes and computing the cost
@@ -100,6 +58,41 @@ const Dijkstra = (data, source, destination) => {
     else {
         return 'Destination node unreachable!'
     }
+    function calulateShortest(neigh, selectedNode) {
+        Object.keys(neigh).forEach(neighbour => {
+            if (weights[neighbour]) {
+                let currentWeight = weights[neighbour];
+                let parent = selectedNode;
+                let child = neighbour;
+                let totalWeight = 0;
+                while (parent !== null) {
+                    totalWeight += graph[parent][child]
+                    child = parent;
+                    parent = parentMap[parent]
+                }
+                // Relaxation
+                if (totalWeight < currentWeight) {
+                    weights[neighbour] = totalWeight;
+                    parentMap[neighbour] = selectedNode;
+                }
+
+            }
+        })
+        //Find the minimum weighted node in the current context
+        var min = {
+            node: null,
+            cost: Infinity
+        };
+
+        Object.keys(weights).forEach(node => {
+            if (weights[node] < min.cost && !visited[node]) {
+                min.cost = weights[node];
+                min.node = node
+            }
+        });
+        return min;
+    }
+
 }
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import Grid from './Grid';
 import { wrapperGraph } from './helper';
@@ -9,59 +9,62 @@ import Dijkstra from '../algorithms/dijkstra';
 const graph = {
     row: 20,
     col: 50,
-    defaultSource: 209,
-    defaultDestination: 418,
     source: 'SOURCE',
     destination: 'DESTINATION',
     obstacles: 'OBSTACLE',
-    path: 'PATH',
+    road: 'ROAD',
 }
-function initialzeObjectForGrid(row, col) {
+function initialzeObjectForGrid(row, col, source, destination) {
     let object = {};
-    let source = graph.defaultSource; //defaut Source
-    let destination = graph.defaultDestination; //default Destination
     for (let i = 0; i < (row * col); i++) {
         if (i === source)
             object[i] = graph.source;
         else if (i === destination)
             object[i] = graph.destination
         else
-            object[i] = graph.path
+            object[i] = graph.road
     }
     return object;
 }
 const App = () => {
-    const [GridData, setGridData] = useState(
-        initialzeObjectForGrid(graph.row, graph.col)
-    );
-    const [ShortestPath, setShortestPath] = useState({});
-    const [VisitedNodes, setVistedNodes] = useState({});
+    const [GridData, setGridData] = useState([]);
+    const SourceNode = useRef(209);
+    const DestinationNode = useRef(412)
+    useEffect(() => {
+        setGridData(initialzeObjectForGrid(graph.row, graph.col, SourceNode.current, DestinationNode.current))
+    }, [])
 
 
-
-
-    const setUpObstacles = useCallback((node, type) => {
+    const setUpObstacles = (node, type) => {
         setGridData(prevState => ({
             ...prevState,
             [node]: type
         }))
-    })
-
-    const setDraggedNode = (source, target) => {
-        let typeTemp = GridData[source];
-        setGridData(prevState => {
-            return ({
-                ...prevState,
-                [target]: typeTemp,
-                [source]: graph.path,
-            })
-        });
     }
 
-    const findPath = async () => {
+    const setDraggedNode = (from, to, changed) => {
+        let typeTemp = GridData[from];
+        console.log(changed)
+        if (changed === graph.source) {
+            SourceNode.current = parseInt(to);
+        } else {
+            DestinationNode.current = parseInt(to);
+        }
+        const newGrid = initialzeObjectForGrid(graph.row, graph.col, SourceNode.current, DestinationNode.current);
+        setGridData(newGrid)
+    }
+
+    const findPath = () => {
         const processedGraph = wrapperGraph(GridData, graph.row, graph.col);
-        const path = await Dijkstra(processedGraph.adjacencyList, processedGraph.source, processedGraph.destination);
-        console.log(path)
+        console.log(processedGraph)
+        const dijkstra = Dijkstra(processedGraph.adjacencyList, processedGraph.source, processedGraph.destination);
+        dijkstra.path.forEach(node => {
+            if (node !== processedGraph.source && node !== processedGraph.destination)
+                setGridData(prevState => ({
+                    ...prevState,
+                    [node]: 'PATH'
+                }))
+        })
     }
 
     return (
@@ -83,6 +86,8 @@ const App = () => {
                     GridData={GridData}
                     setUpObstacles={setUpObstacles}
                     setDraggedNode={setDraggedNode}
+                    sourceNode={SourceNode.current}
+                    destinationNode={DestinationNode.current}
                 />
             </div>
         </div>
