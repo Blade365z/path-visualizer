@@ -15,19 +15,28 @@ export const debounce = (func, wait) => {
 export const wrapperGraph = (graphData, row, col) => {
     let adjacencyList = {}
     let source, destination = null;
-    Object.keys(graphData).map(key => {
+    let i = 0, START, END, base = 0;
+    Object.keys(graphData).forEach(key => {
+        if (i % (col - 1) === 0) {
+            START = base * (col);
+            END = START + col
+            console.log(START, END)
+            base += 1;
+
+        }
         graphData[key] === 'SOURCE' ? source = key : graphData[key] === 'DESTINATION' ? destination = key : destination = destination;
         adjacencyList[key] = {};
         let neighbours = [];
         parseInt(key) + col < row * col && neighbours.push(parseInt(key) + col)
         parseInt(key) - col > 0 && neighbours.push(parseInt(key) - col)
-        parseInt(key) + 1 < row * col && neighbours.push(parseInt(key) + 1)
-        parseInt(key) - 1 > 0 && neighbours.push(parseInt(key) - 1)
+        parseInt(key) + 1 < END && parseInt(key) + 1 < row * col && neighbours.push(parseInt(key) + 1)
+        parseInt(key) - 1 < START && parseInt(key) - 1 > 0 && neighbours.push(parseInt(key) - 1)
         neighbours.forEach(node => {
             if (graphData[node] !== 'OBSTACLE') {
                 adjacencyList[key][node] = 1;
             }
         })
+        i += 1;
     });
     return {
         adjacencyList: adjacencyList,

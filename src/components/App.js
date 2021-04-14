@@ -28,8 +28,8 @@ function initialzeObjectForGrid(row, col, source, destination) {
 }
 const App = () => {
     const [GridData, setGridData] = useState([]);
-    const SourceNode = useRef(209);
-    const DestinationNode = useRef(412)
+    const SourceNode = useRef(201);
+    const DestinationNode = useRef(594)
     useEffect(() => {
         setGridData(initialzeObjectForGrid(graph.row, graph.col, SourceNode.current, DestinationNode.current))
     }, [])
