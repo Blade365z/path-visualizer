@@ -21,7 +21,9 @@
   grid-template-columns: repeat(50, 1fr);
   grid-template-rows: repeat(20, 1fr);
 }
-
+.visited {
+  background-color: blueviolet;
+}
 .destination {
   color: rgb(241, 31, 31);
 }

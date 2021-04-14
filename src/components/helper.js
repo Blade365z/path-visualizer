@@ -20,9 +20,7 @@ export const wrapperGraph = (graphData, row, col) => {
         if (i % (col - 1) === 0) {
             START = base * (col);
             END = START + col
-            console.log(START, END)
             base += 1;
-
         }
         graphData[key] === 'SOURCE' ? source = key : graphData[key] === 'DESTINATION' ? destination = key : destination = destination;
         adjacencyList[key] = {};

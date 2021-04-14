@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 
 //Grid Component
-const Grid = ({ GridData, setUpObstacles, setDraggedNode, sourceNode, destinationNode }) => {
+const Grid = ({ GridData, setUpObstacles, setDraggedNode, sourceNode, destinationNode, visitedNodes }) => {
 
     const [MouseHold, setMouseHold] = useState(false);
     const setObstacle = (node) => {
@@ -44,7 +44,7 @@ const Grid = ({ GridData, setUpObstacles, setDraggedNode, sourceNode, destinatio
         <div className="grid"  >
             {
                 Object.keys(GridData).map((node, i) => {
-                    return <div className={"node " + GridData[node].toLowerCase()} key={i} title={"node: " + node} onMouseEnter={() => setObstacle(node)} onMouseDown={() => initiateObstacleSetup(node)} onMouseUp={() => setMouseHold(false)}    >
+                    return <div className={visitedNodes[node] ? `node visited ${GridData[node].toLowerCase()}` : `node  ${GridData[node].toLowerCase()}`} key={i} title={"node: " + node} onMouseEnter={() => setObstacle(node)} onMouseDown={() => initiateObstacleSetup(node)} onMouseUp={() => setMouseHold(false)}    >
                         {
                             GridData[node] === 'SOURCE' && <div
                                 draggable onDragStart={(e) => dragNode(e, node)}>

@@ -29,7 +29,8 @@ function initialzeObjectForGrid(row, col, source, destination) {
 const App = () => {
     const [GridData, setGridData] = useState([]);
     const SourceNode = useRef(201);
-    const DestinationNode = useRef(594)
+    const DestinationNode = useRef(594);
+    const [Visited, setVisited] = useState({});
     useEffect(() => {
         setGridData(initialzeObjectForGrid(graph.row, graph.col, SourceNode.current, DestinationNode.current))
     }, [])
@@ -44,7 +45,6 @@ const App = () => {
 
     const setDraggedNode = (from, to, changed) => {
         let typeTemp = GridData[from];
-        console.log(changed)
         if (changed === graph.source) {
             SourceNode.current = parseInt(to);
         } else {
@@ -58,6 +58,15 @@ const App = () => {
         const processedGraph = wrapperGraph(GridData, graph.row, graph.col);
         console.log(processedGraph)
         const dijkstra = Dijkstra(processedGraph.adjacencyList, processedGraph.source, processedGraph.destination);
+        let i = 0;
+        dijkstra.visited.forEach(node => {
+            setTimeout(() => {
+                setVisited(prevState => ({
+                    ...prevState,
+                    [node]: true
+                }))
+            })
+        })
         dijkstra.path.forEach(node => {
             if (node !== processedGraph.source && node !== processedGraph.destination)
                 setGridData(prevState => ({
@@ -88,6 +97,7 @@ const App = () => {
                     setDraggedNode={setDraggedNode}
                     sourceNode={SourceNode.current}
                     destinationNode={DestinationNode.current}
+                    visitedNodes={Visited}
                 />
             </div>
         </div>

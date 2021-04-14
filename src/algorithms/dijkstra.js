@@ -9,7 +9,7 @@
 //Dijkstras()
 
 const Dijkstra = (graph, source, destination) => {
-    var visited = {};
+    var visited = [];
     var weights = {};
     var parentMap = {};
     //Initalization
@@ -26,7 +26,7 @@ const Dijkstra = (graph, source, destination) => {
     //Analysing all nodes and computing the cost
     let graphLength = Object.keys(graph).length
     for (let i = 0; i < graphLength; i++) {
-        visited[selectedNode] = true;
+        visited.push(selectedNode);
         let neighbours = graph[selectedNode];
         if (neighbours) {
             let min = calulateShortest(neighbours, selectedNode);
@@ -85,7 +85,7 @@ const Dijkstra = (graph, source, destination) => {
         };
 
         Object.keys(weights).forEach(node => {
-            if (weights[node] < min.cost && !visited[node]) {
+            if (weights[node] < min.cost && !visited.includes(node)) {
                 min.cost = weights[node];
                 min.node = node
             }
