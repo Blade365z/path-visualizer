@@ -65,7 +65,7 @@ const App = () => {
                     ...prevState,
                     [node]: true
                 }))
-            })
+            }, 200)
         })
         dijkstra.path.forEach(node => {
             if (node !== processedGraph.source && node !== processedGraph.destination)
