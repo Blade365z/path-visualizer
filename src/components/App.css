@@ -18,12 +18,36 @@
 .grid {
   vertical-align: middle;
   display: grid;
+  border: 1px solid rgba(0, 0, 0, 0.406);
   grid-template-columns: repeat(50, 1fr);
   grid-template-rows: repeat(20, 1fr);
 }
 .visited {
-  background-color: blueviolet;
+  border-width: 1px;
+  animation-name: visited-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
 }
+@keyframes visited-animation {
+  0% {
+    border-color: slateblue;
+    background-color: rgba(105, 90, 205, 0.125);
+  }
+  50% {
+    border-color: rgb(255, 255, 255);
+    background-color: rgba(105, 90, 205, 0.94);
+    border-radius: 50%;
+  }
+  60% {
+    border-radius: 0%;
+  }
+  100% {
+    border-color: slateblue;
+    background-color: rgba(68, 55, 150, 0.187);
+  }
+}
+
 .destination {
   color: rgb(241, 31, 31);
 }

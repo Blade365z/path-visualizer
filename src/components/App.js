@@ -28,7 +28,7 @@ function initialzeObjectForGrid(row, col, source, destination) {
 }
 const App = () => {
     const [GridData, setGridData] = useState([]);
-    const SourceNode = useRef(201);
+    const SourceNode = useRef(204);
     const DestinationNode = useRef(594);
     const [Visited, setVisited] = useState({});
     useEffect(() => {

@@ -27,13 +27,13 @@ const Dijkstra = (graph, source, destination) => {
     let graphLength = Object.keys(graph).length
     for (let i = 0; i < graphLength; i++) {
         visited.push(selectedNode);
+        if (selectedNode === finishNode) {
+            break;
+        }
         let neighbours = graph[selectedNode];
         if (neighbours) {
             let min = calulateShortest(neighbours, selectedNode);
             selectedNode = min.node;
-        }
-        if (selectedNode === finishNode) {
-            break;
         }
     }
 
