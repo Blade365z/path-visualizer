@@ -28,9 +28,10 @@ function initialzeObjectForGrid(row, col, source, destination) {
 }
 const App = () => {
     const [GridData, setGridData] = useState([]);
-    const SourceNode = useRef(204);
-    const DestinationNode = useRef(594);
+    const SourceNode = useRef(436);
+    const DestinationNode = useRef(440);
     const [Visited, setVisited] = useState({});
+    const [Path, setPath] = useState({});
     useEffect(() => {
         setGridData(initialzeObjectForGrid(graph.row, graph.col, SourceNode.current, DestinationNode.current))
     }, [])
@@ -54,26 +55,43 @@ const App = () => {
         setGridData(newGrid)
     }
 
-    const findPath = () => {
+    const findPath = async () => {
         const processedGraph = wrapperGraph(GridData, graph.row, graph.col);
-        console.log(processedGraph)
         const dijkstra = Dijkstra(processedGraph.adjacencyList, processedGraph.source, processedGraph.destination);
         let i = 0;
-        dijkstra.visited.forEach(node => {
-            setTimeout(() => {
-                setVisited(prevState => ({
-                    ...prevState,
-                    [node]: true
-                }))
-            }, 200)
-        })
-        dijkstra.path.forEach(node => {
-            if (node !== processedGraph.source && node !== processedGraph.destination)
-                setGridData(prevState => ({
-                    ...prevState,
-                    [node]: 'PATH'
-                }))
-        })
+        function plotVisited() {
+            let visitedCount = 0;
+            dijkstra.visited.forEach(node => {
+                setTimeout(() => {
+                    setVisited(prevState => ({
+                        ...prevState,
+                        [node]: true
+                    }))
+                    visitedCount += 1;
+                    if (visitedCount === dijkstra.visited.length) {
+                        setTimeout(plotPath, 1000);
+                    }
+                }, 100)
+
+            });
+        }
+        function plotPath() {
+            let delay = 0;
+            dijkstra.path.forEach(node => {
+                setTimeout(() => {
+                    setPath(prevState => ({
+                        ...prevState,
+                        [node]: true
+                    }))
+                }, 90 * delay)
+                delay += 0.01;
+
+            })
+
+
+        }
+        plotVisited();
+
     }
 
     return (
@@ -87,7 +105,7 @@ const App = () => {
                     </select>
                     <button className="button" onClick={() => findPath()}>Search Path</button>
                     <button className="button">Reset Grid   </button>
-
+                    <button className="button">Set up maze</button>
                 </div>
             </div>
             <div className="grid-container">
@@ -98,6 +116,7 @@ const App = () => {
                     sourceNode={SourceNode.current}
                     destinationNode={DestinationNode.current}
                     visitedNodes={Visited}
+                    pathNodes={Path}
                 />
             </div>
         </div>

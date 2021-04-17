@@ -31,15 +31,14 @@
 }
 @keyframes visited-animation {
   0% {
-    border-color: slateblue;
     background-color: rgba(105, 90, 205, 0.125);
   }
-  50% {
+  60% {
     border-color: rgb(255, 255, 255);
     background-color: rgba(105, 90, 205, 0.94);
     border-radius: 50%;
   }
-  60% {
+  70% {
     border-radius: 0%;
   }
   100% {
@@ -50,6 +49,23 @@
 
 .destination {
   color: rgb(241, 31, 31);
+}
+
+.path {
+  animation-name: path-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 3s;
+}
+
+@keyframes path-animation {
+  0% {
+    background-color: yellow;
+    border-color: rgb(0, 0, 0);
+  }
+  100% {
+    background-color: yellow;
+    border-color: rgb(0, 0, 0);
+  }
 }
 
 .obstacle {

@@ -29,7 +29,6 @@ export const wrapperGraph = (graphData, row, col) => {
         parseInt(key) - col > 0 && neighbours.push(parseInt(key) - col)
         parseInt(key) + 1 <= END && parseInt(key) + 1 < row * col && neighbours.push(parseInt(key) + 1)
         parseInt(key) - 1 >= START && parseInt(key) - 1 >= 0 && neighbours.push(parseInt(key) - 1)
-        console.log(key, END, parseInt(key) + 1)
         neighbours.forEach(node => {
             if (graphData[node] !== 'OBSTACLE') {
                 adjacencyList[key][node] = 1;
@@ -37,7 +36,6 @@ export const wrapperGraph = (graphData, row, col) => {
         })
         i += 1;
     });
-    console.log(adjacencyList)
     return {
         adjacencyList: adjacencyList,
         source: source,
